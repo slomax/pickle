@@ -1,6 +1,7 @@
 import React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Paper from 'material-ui/Paper';
+import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import Checkbox from 'material-ui/Checkbox';
@@ -10,8 +11,32 @@ import Help from 'material-ui/svg-icons/action/help';
 import TextField from 'material-ui/TextField';
 import {Link} from 'react-router';
 import ThemeDefault from '../theme-default';
+import RegistrationModal from '../components/RegistrationModal';
 
 class LoginPage extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+    this.handleRegister = this.handleRegister.bind(this);
+    this.handleRegistrationClose = this.handleRegistrationClose.bind(this);
+
+    this.state = {
+      registerModalIsOpen: false
+    };
+  }
+
+  handleRegister() {
+    this.setState({
+      registerModalIsOpen: true
+    })
+  }
+
+  handleRegistrationClose() {
+    this.setState({
+      registerModalIsOpen: false
+    })
+  }
 
   render() {
     const styles = {
@@ -72,14 +97,18 @@ class LoginPage extends React.Component {
         marginLeft: 5
       },
     };
+
     return (
       <MuiThemeProvider muiTheme={ThemeDefault}>
         <div>
           <div style={styles.loginContainer}>
-
+            <RegistrationModal
+              open={this.state.registerModalIsOpen}
+              handleClose={this.handleRegistrationClose}
+            />
             <Paper style={styles.paper}>
 
-              <form>
+              <div>
                 <TextField
                   hintText="E-mail"
                   floatingLabelText="E-mail"
@@ -106,15 +135,15 @@ class LoginPage extends React.Component {
                       style={styles.loginBtn}/>
                   </Link>
                 </div>
-              </form>
+              </div>
             </Paper>
 
             <div style={styles.buttonsDiv}>
               <FlatButton
                 label="Register"
-                href="/"
                 style={styles.flatButton}
                 icon={<PersonAdd />}
+                onTouchTap={this.handleRegister}
               />
 
               <FlatButton

@@ -7,10 +7,19 @@ import FormPage from './containers/FormPage';
 import TablePage from './containers/TablePage';
 import Dashboard from './containers/DashboardPage';
 
+function requireAuth(nextState, replace) {
+  //if (!userExists()) {
+    replace({
+      pathname: '/login',
+      state: { nextPathname: nextState.location.pathname }
+    })
+  //}
+}
+
 export default (
   <Route>
     <Route path="login" component={LoginPage}/>
-    <Route path="/" component={App}>
+    <Route path="/" component={App} onEnter={requireAuth}>
       <IndexRoute component={Dashboard}/>
       <Route path="dashboard" component={Dashboard}/>
       <Route path="form" component={FormPage}/>
