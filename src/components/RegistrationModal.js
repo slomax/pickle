@@ -1,11 +1,6 @@
 import React from 'react';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import Paper from 'material-ui/Paper';
 import Dialog from 'material-ui/Dialog';
-import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
-import Checkbox from 'material-ui/Checkbox';
-import {grey500, white} from 'material-ui/styles/colors';
 import TextField from 'material-ui/TextField';
 import * as firebase from 'firebase';
 
@@ -39,13 +34,14 @@ class RegistrationModal extends React.Component {
   }
 
   handleSubmit() {
-    const f = firebase;
-    debugger;
-    firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+    const creds = this.state;
+    firebase.auth().createUserWithEmailAndPassword(creds.email, creds.password).then(function(user) {
+      var user = firebase.auth().currentUser;
+      logUser(user); // Optional
+    }, function(error) {
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
-      // ...
     });
   }
 
