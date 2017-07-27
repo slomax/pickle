@@ -16,7 +16,7 @@ class RegistrationModal extends React.Component {
     this.state = {
       email: '',
       password: ''
-    }
+    };
   }
 
 
@@ -24,24 +24,26 @@ class RegistrationModal extends React.Component {
   handleEmailChange(event, email) {
     this.setState({
       email: email
-    })
+    });
   }
 
   handlePasswordChange(event, password) {
     this.setState({
       password: password
-    })
+    });
   }
 
   handleSubmit() {
     const creds = this.state;
-    firebase.auth().createUserWithEmailAndPassword(creds.email, creds.password).then(function(user) {
-      var user = firebase.auth().currentUser;
-      logUser(user); // Optional
-    }, function(error) {
+    firebase.auth().createUserWithEmailAndPassword(creds.email, creds.password).then(function() {
+      // const user = firebase.auth().currentUser;
+      // console.log(user);
+      //logUser(user); // Optional
+    }, function() {
       // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
+      // const errorCode = error.code;
+      // const errorMessage = error.message;
+      // console.log(errorCode, errorMessage);
     });
   }
 
@@ -51,12 +53,14 @@ class RegistrationModal extends React.Component {
         label="Cancel"
         primary={true}
         onTouchTap={this.props.handleClose}
+        key='cancelButton'
       />,
       <FlatButton
         label="Submit"
         primary={true}
         disabled={this.state.password.length === 0 || this.state.email.length === 0}
         onTouchTap={this.handleSubmit}
+        key='submitButton'
       />,
     ];
 
@@ -83,6 +87,6 @@ class RegistrationModal extends React.Component {
       </Dialog>
     );
   }
-};
+}
 
 export default RegistrationModal;
