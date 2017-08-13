@@ -5,14 +5,41 @@ import LeftDrawer from '../components/LeftDrawer';
 import withWidth, {LARGE, SMALL} from 'material-ui/utils/withWidth';
 import ThemeDefault from '../theme-default';
 import Data from '../data';
+import * as firebase from 'firebase';
 
 class App extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      navDrawerOpen: false
+      navDrawerOpen: false,
+      userLoggedIn: false,
+      userData: {
+        username: ''
+      }
     };
+
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        // User is signed in.
+        // var displayName = user.displayName;
+        // var email = user.email;
+        // var emailVerified = user.emailVerified;
+        // var photoURL = user.photoURL;
+        // var isAnonymous = user.isAnonymous;
+        // var uid = user.uid;
+        // var providerData = user.providerData;
+        // ...
+        console.log('signed in');
+        this.setState({
+          userLoggedIn: false
+        })
+      } else {
+        // User is signed out.
+        // ...
+        console.log('signed out');
+      }
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -20,6 +47,8 @@ class App extends React.Component {
       this.setState({navDrawerOpen: nextProps.width === LARGE});
     }
   }
+
+  //todo: add the thing that checks user info if it's active or not, and show the finish reg thing
 
   handleChangeRequestNavDrawer() {
     this.setState({
@@ -40,6 +69,10 @@ class App extends React.Component {
         paddingLeft: navDrawerOpen && this.props.width !== SMALL ? paddingLeftDrawerOpen : 0
       }
     };
+
+    if(!this.state.userLoggedIn) {
+      styles.header.display = 'none';
+    }
 
     return (
       <MuiThemeProvider muiTheme={ThemeDefault}>

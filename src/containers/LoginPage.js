@@ -11,6 +11,7 @@ import TextField from 'material-ui/TextField';
 import {Link} from 'react-router';
 import ThemeDefault from '../theme-default';
 import RegistrationModal from '../components/RegistrationModal';
+import * as firebase from 'firebase';
 
 class LoginPage extends React.Component {
 
@@ -19,10 +20,41 @@ class LoginPage extends React.Component {
 
     this.handleRegister = this.handleRegister.bind(this);
     this.handleRegistrationClose = this.handleRegistrationClose.bind(this);
+    this.handleEmailChange = this.handleEmailChange.bind(this);
+    this.handlePasswordChange = this.handlePasswordChange.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
 
     this.state = {
-      registerModalIsOpen: false
+      registerModalIsOpen: false,
+      email: '',
+      password: ''
     };
+  }
+
+  handleEmailChange(event, email) {
+    this.setState({
+      email: email
+    });
+  }
+
+  handlePasswordChange(event, password) {
+    this.setState({
+      password: password
+    });
+  }
+
+  handleLogin() {
+    const creds = this.state;
+    firebase.auth().signInWithEmailAndPassword(creds.email, creds.password).then(function() {
+      // const user = firebase.auth().currentUser;
+      // console.log(user);
+      //logUser(user); // Optional
+    }, function() {
+      // Handle Errors here.
+      // const errorCode = error.code;
+      // const errorMessage = error.message;
+      // console.log(errorCode, errorMessage);
+    });
   }
 
   handleRegister() {
@@ -112,12 +144,14 @@ class LoginPage extends React.Component {
                   hintText="E-mail"
                   floatingLabelText="E-mail"
                   fullWidth={true}
+                  onChange={this.handleEmailChange}
                 />
                 <TextField
                   hintText="Password"
                   floatingLabelText="Password"
                   fullWidth={true}
                   type="password"
+                  onChange={this.handlePasswordChange}
                 />
 
                 <div>
@@ -128,11 +162,12 @@ class LoginPage extends React.Component {
                     iconStyle={styles.checkRemember.iconStyle}
                   />
 
-                  <Link to="/">
-                    <RaisedButton label="Login"
-                      primary={true}
-                      style={styles.loginBtn}/>
-                  </Link>
+                  <RaisedButton label="Login"
+                    primary={true}
+                    style={styles.loginBtn}
+                    disabled={this.state.email.length === 0 || this.state.password.length === 0}
+                    onTouchTap={this.handleLogin}
+                  />
                 </div>
               </div>
             </Paper>

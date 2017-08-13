@@ -4,7 +4,7 @@ import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import * as firebase from 'firebase';
 
-class RegistrationModal extends React.Component {
+class CompleteRegistrationModal extends React.Component {
 
   constructor(props) {
     super(props);
@@ -18,6 +18,8 @@ class RegistrationModal extends React.Component {
       password: ''
     };
   }
+
+
 
   handleEmailChange(event, email) {
     this.setState({
@@ -69,6 +71,7 @@ class RegistrationModal extends React.Component {
         modal={true}
         open={this.props.open}
       >
+        Thanks for registering!
         <TextField
           hintText="e-mail"
           floatingLabelText="e-mail"
@@ -87,4 +90,4 @@ class RegistrationModal extends React.Component {
   }
 }
 
-export default RegistrationModal;
+export default CompleteRegistrationModal;

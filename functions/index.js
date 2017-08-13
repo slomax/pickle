@@ -16,6 +16,7 @@ exports.sendWelcomeEmail = functions.auth.user().onCreate(event => {
 
 exports.createProfile = functions.auth.user().onCreate( event => {
   return admin.database().ref(`/userProfile/${event.data.uid}`).set({
-    email: event.data.email
+    // username: event.data.username,
+    active: false
   });
 });
